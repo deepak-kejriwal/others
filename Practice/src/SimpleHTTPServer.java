@@ -16,7 +16,7 @@ public class SimpleHTTPServer {
 		System.out.println("Listening for connection on port 8080 ....");
 		while (true) {
 			try (Socket socket = server.accept()) {
-				Path path=Paths.get("C:\\Users\\deepa\\Desktop\\response.json");
+				Path path = Paths.get("C:\\Users\\deepa\\Desktop\\response.json");
 				byte[] fileBytes = Files.readAllBytes(path);
 				String data = new String(fileBytes);
 				Date today = new Date();
@@ -26,5 +26,3 @@ public class SimpleHTTPServer {
 		}
 	}
 }
-
-//Read more: https://javarevisited.blogspot.com/2015/06/how-to-create-http-server-in-java-serversocket-example.html#ixzz5TVZijExa
