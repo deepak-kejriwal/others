@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 
 /**
  * 
- * @author deepak1037
+ * @author Deepak Kejriwal
  *
  */
 public class JavaPriorityQueue {

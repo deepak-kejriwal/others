@@ -2,7 +2,7 @@ package com.coders;
 
 /**
  * 
- * @author deepak1037
+ * @author Deepak Kejriwal
  *
  */
 public class DoubleNumberComputation {
