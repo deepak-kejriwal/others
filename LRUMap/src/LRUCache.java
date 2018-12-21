@@ -2,7 +2,7 @@ import java.util.HashMap;
 
 /**
 * 
-* @author deepak1037
+* @author Deepak Kejriwal
 * 
 * @reference https://medium.com/@krishankantsinghal/my-first-blog-on-medium-583159139237
 *

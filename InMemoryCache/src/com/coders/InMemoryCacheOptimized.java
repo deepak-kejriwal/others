@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 
- * @author deepak1037
+ * @author Deepak Kejriwal
  * 
  * @reference https://explainjava.com/simple-in-memory-cache-java/
  *

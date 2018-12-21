@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 
- * @author deepak1037
+ * @author Deepak Kejriwal
  *
  */
 public class InMemoryCache<T> implements Cache<T> {
