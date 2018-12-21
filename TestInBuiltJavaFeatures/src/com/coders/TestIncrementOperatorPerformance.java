@@ -1,5 +1,5 @@
 package com.coders;
-
+@SuppressWarnings(value = { "unused" })
 public class TestIncrementOperatorPerformance {
 	private static long counter = 3000000000l;
 
