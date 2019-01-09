@@ -14,21 +14,25 @@ import java.util.concurrent.TimeUnit;
  * @reference https://explainjava.com/simple-in-memory-cache-java/
  *
  */
-public class InMemoryCacheOptimized<T> implements Cache<T> {
+public class LRUMapCacheWithTTL<T> implements Cache<T> {
 
-	private final ConcurrentHashMap<String, SoftReference<T>> cache = new ConcurrentHashMap<>();
+	private final ConcurrentHashMap<String, SoftReference<CacheObject<T>>> cache = new ConcurrentHashMap<>();
 	private final DelayQueue<CacheObject<T>> cleaningUpQueue = new DelayQueue<>();
 	private static final int DEFAULT_EXPIRE_TIME = 5000;
 	/** The default expiration time in millisecond */
 	private final long defaultExpire;
 
-	public InMemoryCacheOptimized(final long defaultExpire) {
+	private static final int DEFAULT_MAX_ENTRIES = 2;
+	int maxEntry; // Capacity of LRU Cache
+	
+	public LRUMapCacheWithTTL(int maxEntry,final long defaultExpire) {
+		this.maxEntry=maxEntry;
 		this.defaultExpire = defaultExpire;
 		Thread cleanerThread = new Thread(() -> {
 			while (!Thread.currentThread().isInterrupted()) {
 				try {
 					CacheObject<T> delayedCacheObject = cleaningUpQueue.take();
-					cache.remove(delayedCacheObject.getKey(), delayedCacheObject.getReference());
+					cache.remove(delayedCacheObject.getKey());
 				} catch (InterruptedException e) {
 					Thread.currentThread().interrupt();
 				}
@@ -38,8 +42,12 @@ public class InMemoryCacheOptimized<T> implements Cache<T> {
 		cleanerThread.start();
 	}
 
-	public InMemoryCacheOptimized() {
-		this(DEFAULT_EXPIRE_TIME);
+	public LRUMapCacheWithTTL() {
+		this(DEFAULT_MAX_ENTRIES,DEFAULT_EXPIRE_TIME);
+	}
+	
+	public LRUMapCacheWithTTL(int maxEntry) {
+		this(maxEntry,DEFAULT_EXPIRE_TIME);
 	}
 
 	@Override
@@ -55,10 +63,16 @@ public class InMemoryCacheOptimized<T> implements Cache<T> {
 		if (value == null) {
 			cache.remove(key);
 		} else {
+			if(cache.size()>=maxEntry) {
+				CacheObject<T> cacheObject=cleaningUpQueue.peek();
+				cache.remove(cacheObject.getKey());
+				cleaningUpQueue.remove(cacheObject);
+			}
 			long expiryTime = System.currentTimeMillis() + periodInMillis;
-			SoftReference<T> reference = new SoftReference<>(value);
+			CacheObject<T> cacheObject=new CacheObject<T>(key, value, expiryTime);
+			SoftReference<CacheObject<T>> reference = new SoftReference<>(cacheObject);
 			cache.put(key, reference);
-			cleaningUpQueue.put(new CacheObject<T>(key, reference, expiryTime));
+			cleaningUpQueue.put(cacheObject);
 		}
 	}
 
@@ -69,7 +83,15 @@ public class InMemoryCacheOptimized<T> implements Cache<T> {
 
 	@Override
 	public T get(String key) {
-		return Optional.ofNullable(cache.get(key)).map(SoftReference::get).orElse(null);
+		Optional<CacheObject<T>> cacheObjectOpt=Optional.ofNullable(cache.get(key)).map(SoftReference::get);
+		if(cacheObjectOpt.isPresent()) {
+			CacheObject<T> cacheObject=cacheObjectOpt.get();
+			cleaningUpQueue.remove(cacheObject);
+			cacheObject.setExpiryTime(System.currentTimeMillis()+defaultExpire);
+			cleaningUpQueue.put(cacheObject);
+			return cacheObject.getValue();
+		}
+		return null;
 	}
 
 	@Override
@@ -82,24 +104,32 @@ public class InMemoryCacheOptimized<T> implements Cache<T> {
 		return cache.size();
 	}
 
+	public T getHead() {
+		return cleaningUpQueue.peek().getValue();
+	}
 	private static class CacheObject<T> implements Delayed {
 
-		public CacheObject(String key, SoftReference<T> reference, long expiryTime) {
+		public CacheObject(String key, T value, long expiryTime) {
 			this.key = key;
-			this.reference = reference;
+			this.value = value;
 			this.expiryTime = expiryTime;
 		}
 
 		private final String key;
-		private final SoftReference<T> reference;
-		private final long expiryTime;
+		private final T value;
+		private long expiryTime;
 
 		public String getKey() {
 			return key;
 		}
 
-		public SoftReference<T> getReference() {
-			return reference;
+		public T getValue() {
+			return value;
+		}
+
+		
+		public void setExpiryTime(long expiryTime) {
+			this.expiryTime = expiryTime;
 		}
 
 		@Override
@@ -120,7 +150,7 @@ public class InMemoryCacheOptimized<T> implements Cache<T> {
 			result = prime * result + (int) (expiryTime ^ (expiryTime >>> 32));
 			result = prime * result + ((key == null) ? 0 : key.hashCode());
 			result = prime * result
-					+ ((reference == null) ? 0 : reference.get() == null ? 0 : reference.get().hashCode());
+					+ ((value == null) ? 0 : value.hashCode());
 			return result;
 		}
 
@@ -142,13 +172,11 @@ public class InMemoryCacheOptimized<T> implements Cache<T> {
 			} else if (!key.equals(other.key)) {
 				return false;
 			}
-			if (reference == null && other.reference != null) {
+			if (value == null && other.value != null) {
 				return false;
-			} else if (other.reference == null) {
+			} else if (other.value == null) {
 				return false;
-			} else if (reference.get() == null && other.reference.get() != null) {
-				return false;
-			} else if (!reference.get().equals(other.reference.get())) {
+			} else if (!value.equals(other.value)) {
 				return false;
 			}
 			return true;
@@ -156,16 +184,20 @@ public class InMemoryCacheOptimized<T> implements Cache<T> {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		InMemoryCacheOptimized<Integer> cache=new InMemoryCacheOptimized<>();
+		LRUMapCacheWithTTL<Integer> cache=new LRUMapCacheWithTTL<>();
 		cache.put("1", 100);
-		cache.put("2", 200);
+		cache.put("2", 200,1000);
+		cache.put("3", 300);
+		System.out.println(cache.getHead());
 		System.out.println("Trying cache get");
 		System.out.println(cache.get("1"));
 		System.out.println(cache.get("2"));
+		System.out.println(cache.get("3"));
+		System.out.println(cache.getHead());
 		System.out.println("Trying cache get again");
 		System.out.println(cache.get("1"));
 		System.out.println(cache.get("2"));
-		Thread.sleep(6000);
+		//Thread.sleep(6000);
 		System.out.println("Trying cache get after 6 sec");
 		System.out.println(cache.get("1"));
 		System.out.println(cache.get("2"));
