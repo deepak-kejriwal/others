@@ -24,7 +24,7 @@ import java.util.stream.Stream;
  * 
  * 
  */
-public class MaxAverageSCore {
+public class MaxAverageScore {
 
 	public static void main(String[] args) {
 		String[][] input= {
