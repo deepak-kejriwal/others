@@ -10,6 +10,7 @@ import java.util.Base64;
 public class BaseEncodingImpl {
 
 	public static void main(String[] args) {
+		System.out.println(Integer.toString(70, 36));
        String input="https://www.google.com/";
 		MessageDigest md = getMD5Digester();
         
@@ -22,6 +23,9 @@ public class BaseEncodingImpl {
         String encoded64 = Base64.getUrlEncoder().withoutPadding().encodeToString(md5Bytes);
 		System.out.println("Base64:"+ encoded64);
 		System.out.println("Base64:"+encoded64.length());
+		// conversion of 64 encoded bytes back to MD5 bytes
+		byte[] bytes64=Base64.getUrlDecoder().decode(encoded64);
+		System.out.println("MD5:"+new String(bytes64));
 		
 		// conversion of MD5 bytes to 62 encoded bytes
 		Base62 base62=Base62.createInstance();
@@ -31,7 +35,7 @@ public class BaseEncodingImpl {
 		// conversion of 62 encoded bytes back to MD5 bytes
 		bytes=base62.decode(bytes);
 		System.out.println("MD5:"+new String(bytes));
-		System.out.println("Output of MD5 bytes before encoding and after decoding is same. Hence, implementation of Base62 class is correct.");
+		System.out.println("Output of MD5 bytes before encoding and after decoding is same. Hence, implementation of Base62 and Base64 class is correct.");
 		
 	}
 
