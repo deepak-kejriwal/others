@@ -112,7 +112,7 @@ public class InMemoryCacheOptimized<T> implements Cache<T> {
 		public int compareTo(Delayed o) {
 			return Long.compare(expiryTime, o != null ? ((CacheObject<T>) o).expiryTime : 0);
 		}
-
+/*
 		@Override
 		public int hashCode() {
 			final int prime = 31;
@@ -152,7 +152,7 @@ public class InMemoryCacheOptimized<T> implements Cache<T> {
 				return false;
 			}
 			return true;
-		}
+		}*/
 	}
 	
 	public static void main(String[] args) throws Exception {
