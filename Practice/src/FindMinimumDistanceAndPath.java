@@ -5,12 +5,11 @@ import java.util.Stack;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Test4 {
-	private static int arraySize = 1000;
+public class FindMinimumDistanceAndPath {
 
 	public static void main(String[] args) {
-		List<List<Integer>> area = testData100();
-		int distance = new Test4().minimumDistance(area.size(), area.get(0).size(), area);
+		List<List<Integer>> area = testData101();
+		int distance = new FindMinimumDistanceAndPath().minimumDistance(area.size(), area.get(0).size(), area);
 		System.out.println(distance);
 	}
 
@@ -36,14 +35,16 @@ public class Test4 {
 	static List<List<Integer>> testData101() {
 		List<Integer> list1 = Stream.of(1, 0, 0).collect(Collectors.toList());
 		List<Integer> list2 = Stream.of(1, 0, 0).collect(Collectors.toList());
-		List<Integer> list3 = Stream.of(1, 9, 1).collect(Collectors.toList());
+		List<Integer> list3 = Stream.of(1, 1, 1).collect(Collectors.toList());
 		List<List<Integer>> area = new ArrayList<>();
 		area.add(list1);
 		area.add(list2);
 		area.add(list3);
 		return area;
 	}
+
 	QItem[][] pathTo;
+
 	public int minimumDistance(int numRows, int numColumns, List<List<Integer>> area) {
 		if (numRows < 1 || numColumns < 1) {
 			return -1;
@@ -52,7 +53,7 @@ public class Test4 {
 			return -1;
 		}
 		boolean[][] visited = new boolean[numRows][numColumns];
-		pathTo=new QItem[numRows][numColumns];
+		pathTo = new QItem[numRows][numColumns];
 		return findDistance(numRows, numColumns, area, visited);
 	}
 
@@ -64,8 +65,8 @@ public class Test4 {
 		list.add(source);
 		visited[0][0] = true;
 		int distance = 0;
-		int endX=-1;
-		int endY=-1;
+		int endX = -1;
+		int endY = -1;
 		while (!list.isEmpty()) {
 			QItem item = list.removeFirst();
 			int x = item.row;
@@ -73,8 +74,8 @@ public class Test4 {
 			int d = item.dist;
 			if (area.get(x).get(y) == 9) {
 				distance = d;
-				endX=x;
-				endY=y;
+				endX = x;
+				endY = y;
 				path.push(item);
 				break;
 			}
@@ -114,15 +115,18 @@ public class Test4 {
 			}
 
 		}
-		QItem qt=pathTo[endX][endY];
-		while(!(qt.row==0&&qt.col==0)) {
+		if (endX < 0 || endY < 0) {
+			return -1;
+		}
+		QItem qt = pathTo[endX][endY];
+		while (!(qt.row == 0 && qt.col == 0)) {
 			path.push(qt);
-			qt=pathTo[qt.row][qt.col];
+			qt = pathTo[qt.row][qt.col];
 		}
 		path.push(qt);
 		while (!path.isEmpty()) {
 			QItem item = path.pop();
-			System.out.print("["+item.row+","+item.col+"]-->");
+			System.out.print("[" + item.row + "," + item.col + "]-->");
 		}
 		return distance;
 	}
