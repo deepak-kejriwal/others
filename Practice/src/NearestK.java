@@ -6,26 +6,32 @@ import java.util.PriorityQueue;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Test2 {
+public class NearestK {
 
 	public static void main(String[] args) {
 		
 		List<Integer> list1 = Stream.of(1, 2).collect(Collectors.toList());
 		List<Integer> list2 = Stream.of(3, 4).collect(Collectors.toList());
 		List<Integer> list3 = Stream.of(1, -1).collect(Collectors.toList());
+		List<Integer> list4 = Stream.of(5, 5).collect(Collectors.toList());
 		List<List<Integer>> allLocation = new ArrayList<>();
+		allLocation.add(list4);
 		allLocation.add(list1);
 		allLocation.add(list2);
 		allLocation.add(list3);
-		String str;
-
-		System.out.println(nearestSteakHouses(3, allLocation, 2));
+		System.out.println(nearestSteakHouses(4, allLocation, 2));
 	}
 
-	static Comparator<List<Integer>> comparator=(List<Integer> xya, List<Integer> xyb) -> sqrt(xya).compareTo(sqrt(xyb));
+	static Comparator<List<Integer>> comparator=(List<Integer> xya, List<Integer> xyb) -> sqrt(xyb).compareTo(sqrt(xya));
 	
 	public static void main2(String[] args) {
-		PriorityQueue<List<Integer>> pq=new PriorityQueue(comparator.reversed());
+		PriorityQueue<Integer> pq=new PriorityQueue<>((x,y)->y.compareTo(x));
+		pq.add(1);
+		pq.add(3);
+		pq.add(2);
+		pq.add(4);
+		System.out.println(pq.poll());
+		System.out.println(pq.poll());
 		System.out.println(pq.poll());
 		System.out.println(pq.poll());
 	}
@@ -35,18 +41,13 @@ public class Test2 {
 		if(numSteakHouses>totalSteakHouses){
 			return allLocation;
 		}
-		PriorityQueue<List<Integer>> pq=new PriorityQueue<>(numSteakHouses,comparator);
+		PriorityQueue<List<Integer>> pq=new PriorityQueue<>(comparator);
 		Iterator<List<Integer>> itr=allLocation.iterator();
 		while(itr.hasNext()) {
 			List<Integer> data=itr.next();
-			if(pq.size()<numSteakHouses) {
-				pq.add(data);
-			}else  {
-				List<Integer> max=pq.peek();
-				if(sqrt(max)>sqrt(data)) {
-					pq.poll();
-					pq.add(data);
-				}
+			pq.add(data);
+			if(pq.size()>numSteakHouses) {
+				pq.poll();
 			}
 		}
 		
@@ -72,7 +73,8 @@ public class Test2 {
 			if(x==null||y==null) {
 				return Double.MAX_VALUE;
 			}
-			return Math.sqrt(x ^ 2 + y ^ 2);
+			Double res=Math.sqrt(x*x + y*y);
+			return res;
 		}
 		return Double.MAX_VALUE;
 	}
