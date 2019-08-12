@@ -37,9 +37,7 @@ public class Java8Stream {
 		System.out.println(input);
 		System.out.print("testListToArray: output: ");
 		Integer[] output = ListToArray(input);
-		for (Integer x : output) {
-			System.out.print(x + " ");
-		}
+		System.out.print(Arrays.toString(output));
 		System.out.println();
 	}
 
@@ -49,9 +47,7 @@ public class Java8Stream {
 		System.out.println(input);
 		System.out.print("testListToArrayPrimitive: output: ");
 		int[] output = ListToArrayPrimitive(input);
-		for (int x : output) {
-			System.out.print(x + " ");
-		}
+		System.out.print(Arrays.toString(output));
 		System.out.println();
 	}
 }
