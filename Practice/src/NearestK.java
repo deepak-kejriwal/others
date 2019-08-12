@@ -37,6 +37,28 @@ public class NearestK {
 		return pq.stream().collect(Collectors.toList());
 	}
 	
+    public int[][] kClosest(int[][] points, int K) {
+        PriorityQueue<int[]> pq=new PriorityQueue<>((x,y)->sqrt(y).compareTo(sqrt(x)));
+        for(int[] point:points){
+            pq.add(point);
+            if(pq.size()>K){
+                pq.remove();
+            }
+        }
+        int[][] res=new int[K][2];
+        int i=0;
+        while(pq.size()>0){
+            res[i]=pq.remove();
+            i++;
+        }
+        return res;
+    }
+    
+    public Long sqrt(int[] x){
+        Integer a=x[0];
+        Integer b=x[1];
+        return (long)(a*a+b*b);
+    }
 	private static Double sqrt(List<Integer> xya) {
 		if(xya!=null && xya.size()==2) {
 			Integer x = xya.get(0);
