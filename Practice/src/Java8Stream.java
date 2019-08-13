@@ -80,7 +80,7 @@ public class Java8Stream {
 				Collectors.averagingDouble(record -> Double.parseDouble(record[1]))));
 		Double maxAvgScore = map.values().stream().mapToDouble(x -> x).max().getAsDouble();// .orElseGet(()->0);
 		System.out.println(maxAvgScore);
-		//Output is 25.5 (Max of (20+31,24,23))
+		// Output is 25.5 (Max of (20+31,24,23))
 	}
 
 	/**
@@ -160,35 +160,4 @@ public class Java8Stream {
 		return Arrays.stream(nums).mapToInt(x -> x).toArray();
 	}
 
-	/**
-	 * 
-	 * 
-	 */
-	public static void main(String[] args) {
-		List<String> list = Stream.of("a", "b", "c").collect(Collectors.toList());
-		String str = list.stream().collect(Collectors.joining());
-		System.out.println(str);
-		String str2 = String.join("", list);
-		System.out.println(str2);
-	}
-
-	public static void testListToArray() {
-		System.out.print("testListToArray: input: ");
-		List<Integer> input = Stream.of(1, 2, 3).collect(Collectors.toList());
-		System.out.println(input);
-		System.out.print("testListToArray: output: ");
-		Integer[] output = ListToArray(input);
-		System.out.print(Arrays.toString(output));
-		System.out.println();
-	}
-
-	public static void testListToArrayPrimitive() {
-		System.out.print("testListToArrayPrimitive: input: ");
-		List<Integer> input = Stream.of(1, 2, 3).collect(Collectors.toList());
-		System.out.println(input);
-		System.out.print("testListToArrayPrimitive: output: ");
-		int[] output = ListToArrayPrimitive(input);
-		System.out.print(Arrays.toString(output));
-		System.out.println();
-	}
 }
