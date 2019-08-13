@@ -95,6 +95,13 @@ public class Java8Stream {
 		String str2 = String.join("", list);
 	}
 
+	/**
+	 * To sort the map by value and return as LinkedHashMap to preserve sorted order
+	 * 
+	 * @param map which need to be sorted by value
+	 * @return sorted map
+	 */
+
 	public static Map<String, Integer> hashMapSortByValue(Map<String, Integer> input) {
 		Stream<Entry<String, Integer>> entries = input.entrySet().stream();
 		Map<String, Integer> sorted = entries.sorted(comparingByValue())
