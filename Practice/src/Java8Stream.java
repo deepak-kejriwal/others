@@ -61,8 +61,33 @@ import static java.util.Map.Entry.*;
  * </pre>
  *
  */
+@SuppressWarnings("unused")
 public class Java8Stream {
 
+	/**
+	 * Example, where we group score by name and calculating average at the same
+	 * time. groupingBy(key), generally give Map<key,List<value>>.
+	 * groupingBy(key,averagingDouble()) will give average of List<Value>, hence
+	 * output is Map<Key,Value>
+	 * 
+	 * Later we used that output to find max value in map
+	 * 
+	 */
+	public static void getMaxAverageScore() {
+		String[][] input = { { "deepak", "20" }, { "deepak", "31" }, { "kumar", "24" }, { "kejriwal", "23" } };// {name,score}
+		Stream<String[]> st = Arrays.stream(input);
+		Map<String, Double> map = st.collect(Collectors.groupingBy(record -> record[0],
+				Collectors.averagingDouble(record -> Double.parseDouble(record[1]))));
+		Double maxAvgScore = map.values().stream().mapToDouble(x -> x).max().getAsDouble();// .orElseGet(()->0);
+		System.out.println(maxAvgScore);
+		//Output is 25.5 (Max of (20+31,24,23))
+	}
+
+	/**
+	 * To join list of strings to single string
+	 * 
+	 * @param list of strings
+	 */
 	public static void joinListOfStrings(List<String> list) {
 		// Method-1, using stream
 		String str1 = list.stream().collect(Collectors.joining());
