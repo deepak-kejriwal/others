@@ -4,7 +4,9 @@
 * @author Deepak Kejriwal
 *
 */
+import java.util.Deque;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 public class LRUCacheLinkedHashMap<K, V> extends LinkedHashMap<K, V> {
@@ -32,8 +34,10 @@ public class LRUCacheLinkedHashMap<K, V> extends LinkedHashMap<K, V> {
 	public static void main(String[] args) throws java.lang.Exception {
 		// your code goes here
 		LRUCacheLinkedHashMap<Integer, Integer> lrucache = new LRUCacheLinkedHashMap<>(4);// Here i am setting 4 to test
-																							// the LRU cache
-		lrucache.put(1, 1);
+						Deque<Character> dq=new LinkedList<>();																	// the LRU cache
+		char c='a';
+		dq.add(c);
+						lrucache.put(1, 1);
 		lrucache.put(10, 10);
 		lrucache.put(15, 15);
 		lrucache.put(12, 12);

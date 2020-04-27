@@ -1,7 +1,3 @@
-import java.util.HashMap;
-
-import java.util.Arrays;
-
 public class TestJavaFeatures {
 
 	public static void main(String[] args) throws Exception {
