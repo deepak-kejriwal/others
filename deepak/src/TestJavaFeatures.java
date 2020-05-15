@@ -24,7 +24,7 @@ public class TestJavaFeatures {
 		Arrays.sort(nums);
 		int len = Arrays.binarySearch(nums, 8);
 		System.out.println(len);
-		Class cls = Class.forName("com.att.idp.catalog.model.dtvn.package-info");
+		Class cls = Class.forName("");
 		Object obj = cls.getMethod("toString");
 		double d1 = 5.1;
 		double d2 = 0.1;
