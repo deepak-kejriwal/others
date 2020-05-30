@@ -9,5 +9,9 @@
 	<classpathentry kind="lib" path="lib/xmlbeans-2.6.0.jar"/>
 	<classpathentry kind="lib" path="lib/xmlbeans-xpath-2.6.0.jar"/>
 	<classpathentry kind="lib" path="lib/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/com.fasterxml.jackson.databind.jar"/>
+	<classpathentry kind="lib" path="lib/com.fasterxml.jackson.core.jar"/>
+	<classpathentry kind="lib" path="lib/com.fasterxml.jackson.annotations.jar"/>
+	<classpathentry kind="lib" path="lib/commons-io-2.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

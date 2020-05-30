@@ -35,6 +35,8 @@ public class TestJavaFeatures {
 			System.out.println("incorrect");
 		}
 		HashMap hm = new HashMap();
+		 List<Character> tmp = new ArrayList<>();
+		
 
 		/*
 		 * 

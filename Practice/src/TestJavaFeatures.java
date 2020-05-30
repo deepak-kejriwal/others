@@ -1,10 +1,29 @@
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.Stack;
+
 public class TestJavaFeatures {
 
 	public static void main(String[] args) throws Exception {
-
-
-
-		
+		Map<String,Integer> map = new HashMap<>();
+		String[] strs= {"I","am","good"};
+		String str=String.join(" ",strs);
+		System.out.println(str);
+		map.compute("1", (k,v)-> v==null ? 1 : v+1);
+		map.compute("1", (k,v)-> v==null ? 1 : v+1);
+		System.out.println(map);
+		map.compute("1", (k,v)-> v==1 ? map.remove(k) : v-1);
+		map.compute("1", (k,v)-> v==1 ? map.remove(k) : v-1);
+		System.out.println(map);
+		Set<String> set;new HashSet<>();
+		Stack<String> stack = new Stack<>();
+		stack.push("a");
+		stack.push("b");
+		stack.push("b");
+		stack.push("d");
+		System.out.println(String.join(":", stack));
 		/*
 		
 		List<String> list = Stream.of("abc", "defg", "hi").collect(Collectors.toList());

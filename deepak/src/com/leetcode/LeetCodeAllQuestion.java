@@ -1,7 +1,6 @@
 package com.leetcode;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -19,11 +18,16 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import com.att.idp.catalog.common.constants.util.JsonService;
 import com.example.Example;
 import com.example.StatStatusPair;
+import com.leetcode.bean.AllQuestionMain;
+import com.leetcode.bean.Question;
+
+import util.JsonService;
 
 public class LeetCodeAllQuestion {
+	private static String dirPath = "C:\\1\\leetcode\\leetcode";
+	private static String excelPath = "C:\\1\\leetcode\\leetcode-excel";
 	private static Map<Integer, String> difficulty = new HashMap<>();
 	static {
 		difficulty.put(1, "Easy");
@@ -37,15 +41,16 @@ public class LeetCodeAllQuestion {
 		Map<String, List<LeetCodeRow>> allMap=new HashMap<>();
 		lc.loadAllFiles(allMap,all);
 
-		String dirPath = "C:\\Users\\dk882q\\Desktop\\leetcode";
+		
 		Map<String, List<LeetCodeRow>> map=new HashMap<>();
 		File dir = new File(dirPath);
 		for (File file : dir.listFiles()) {
 			if(file.isFile())
 			lc.processFiles(all,map,file);
 		}
-		lc.writeToExcel(map);
+		//lc.writeToExcel(map);
 		lc.updateToExcel(allMap);
+		//lc.writeToExcel(allMap);
 	}
 
 	private void processFiles(Map<String, Map<Integer, List<Integer>>> all,Map<String, List<LeetCodeRow>> map, File file) throws Exception {
@@ -60,7 +65,7 @@ public class LeetCodeAllQuestion {
 
 	private List<LeetCodeRow> loadData(String fileName,Map<String, Map<Integer, List<Integer>>> all,Example dlb) {
 		List<LeetCodeRow> list = new ArrayList<>();
-		LeetCodeRow leetCodeT=new LeetCodeRow("QuestionId","Question", "Difficulty", "Frequency");
+		LeetCodeRow leetCodeT=new LeetCodeRow("FrontendId","QuestionId","Question", "Difficulty", "Frequency");
 		leetCodeT.setAmazonFrequency("Amazon");
 		leetCodeT.setAppleFrequency("Apple");
 		leetCodeT.setGoogleFrequency("Google");
@@ -70,13 +75,13 @@ public class LeetCodeAllQuestion {
 		leetCodeT.setPaidOnly("PaidOnly");
 		list.add(leetCodeT);
 		for (StatStatusPair statStatusPair : dlb.getStatStatusPairs()) {
-			LeetCodeRow leetCodeRow=new LeetCodeRow(statStatusPair.getStat().getFrontendQuestionId(),statStatusPair.getStat().getQuestionTitle(),difficulty.get(statStatusPair.getDifficulty().getLevel()),statStatusPair.getFrequency());
-			leetCodeRow.setAmazonFrequency(Optional.ofNullable(all.get("Amazon-All")).map(x->x.get(statStatusPair.getStat().getQuestionId1())).map(y->y.get(0)).orElse(0));
-			leetCodeRow.setAppleFrequency(Optional.ofNullable(all.get("Apple-All")).map(x->x.get(statStatusPair.getStat().getQuestionId1())).map(y->y.get(0)).orElse(0));
-			leetCodeRow.setFacebookFrequency(Optional.ofNullable(all.get("Facebook-All")).map(x->x.get(statStatusPair.getStat().getQuestionId1())).map(y->y.get(0)).orElse(0));
-			leetCodeRow.setGoogleFrequency(Optional.ofNullable(all.get("Google-All")).map(x->x.get(statStatusPair.getStat().getQuestionId1())).map(y->y.get(0)).orElse(0));
-			leetCodeRow.setLinkedinFrequency(Optional.ofNullable(all.get("LinkedIn-All")).map(x->x.get(statStatusPair.getStat().getQuestionId1())).map(y->y.get(0)).orElse(0));
-			leetCodeRow.setMicrosoftFrequency(Optional.ofNullable(all.get("Microsoft-All")).map(x->x.get(statStatusPair.getStat().getQuestionId1())).map(y->y.get(0)).orElse(0));
+			LeetCodeRow leetCodeRow=new LeetCodeRow(statStatusPair.getStat().getFrontendQuestionId(),statStatusPair.getStat().getQuestionId(),statStatusPair.getStat().getQuestionTitle(),difficulty.get(statStatusPair.getDifficulty().getLevel()),statStatusPair.getFrequency());
+			leetCodeRow.setAmazonFrequency(Optional.ofNullable(all.get("Amazon-All")).map(x->x.get(statStatusPair.getStat().getQuestionId())).map(y->y.get(0)).orElse(0));
+			leetCodeRow.setAppleFrequency(Optional.ofNullable(all.get("Apple-All")).map(x->x.get(statStatusPair.getStat().getQuestionId())).map(y->y.get(0)).orElse(0));
+			leetCodeRow.setFacebookFrequency(Optional.ofNullable(all.get("Facebook-All")).map(x->x.get(statStatusPair.getStat().getQuestionId())).map(y->y.get(0)).orElse(0));
+			leetCodeRow.setGoogleFrequency(Optional.ofNullable(all.get("Google-All")).map(x->x.get(statStatusPair.getStat().getQuestionId())).map(y->y.get(0)).orElse(0));
+			leetCodeRow.setLinkedinFrequency(Optional.ofNullable(all.get("LinkedIn-All")).map(x->x.get(statStatusPair.getStat().getQuestionId())).map(y->y.get(0)).orElse(0));
+			leetCodeRow.setMicrosoftFrequency(Optional.ofNullable(all.get("Microsoft-All")).map(x->x.get(statStatusPair.getStat().getQuestionId())).map(y->y.get(0)).orElse(0));
 			leetCodeRow.setPaidOnly(statStatusPair.getPaidOnly());
 			if(fileName.equalsIgnoreCase("AllQuestions")) {
 				paidOnlyMap.put(leetCodeRow.getQuestionId(), leetCodeRow.getPaidOnly());
@@ -87,8 +92,8 @@ public class LeetCodeAllQuestion {
 	}
 
 	private void loadAllFiles(Map<String, List<LeetCodeRow>> allMap,Map<String, Map<Integer, List<Integer>>> all) throws Exception {
-		String dirPath = "C:\\Users\\dk882q\\Desktop\\leetcode\\All";
-		File dir = new File(dirPath);
+		String dirPathAll = dirPath+"\\All";
+		File dir = new File(dirPathAll);
 		for (File file : dir.listFiles()) {
 			if (file.isFile())
 				processAllFiles(allMap,all, file);
@@ -97,7 +102,7 @@ public class LeetCodeAllQuestion {
 
 	private void processAllFiles(Map<String, List<LeetCodeRow>> allMap,Map<String, Map<Integer, List<Integer>>> all, File file) throws Exception {
 		List<LeetCodeRow> list = new ArrayList<>();
-		list.add(new LeetCodeRow("QuestionId","Question", "Difficulty", "Frequency 6 month","Frequency 1 Year","Frequency 2 Year","Frequency All","PaidOnly"));
+		list.add(new LeetCodeRow("FrontendId","QuestionId","Question", "Difficulty", "Frequency 6 month","Frequency 1 Year","Frequency 2 Year","Frequency All","PaidOnly"));
 		String jsonString = new String(Files.readAllBytes(file.toPath()));
 		AllQuestionMain dlb = JsonService.getObjectFromJson(jsonString, AllQuestionMain.class);
 		String fileName = FilenameUtils.getBaseName(file.getName());
@@ -110,27 +115,27 @@ public class LeetCodeAllQuestion {
 		List<Question> questions =dlb.getData().getCompanyTag().getQuestions();
 		Map<Integer,List<Integer>> frequencies= dlb.getData().getCompanyTag().getFrequencies();
 		for(Question ques:questions) {
-			List<Integer> freq=frequencies.get(ques.getQuestionId1());
+			List<Integer> freq=frequencies.get(ques.getQuestionId());
 			if(freq==null) {
 				System.out.println("");
 			}
-			LeetCodeRow leetCodeRow=new LeetCodeRow(ques.getQuestionFrontendId(),ques.getTitle(),ques.getDifficulty(),freq.get(0),freq.get(1),freq.get(2),freq.get(3),null);
+			LeetCodeRow leetCodeRow=new LeetCodeRow(ques.getQuestionFrontendId(),ques.getQuestionId(),ques.getTitle(),ques.getDifficulty(),freq.get(0),freq.get(1),freq.get(2),freq.get(3),null);
 			list.add(leetCodeRow);
 		}
 	
 	}
 	
 	private void updateToExcel(Map<String, List<LeetCodeRow>> data) throws Exception {
-		  FileInputStream inputStream = new FileInputStream(new File("C:\\SC\\" + "LeetCode" + ".xlsx"));
+		  //FileInputStream inputStream = new FileInputStream(new File(excelPath + "\\LeetCode" + ".xlsx"));
 		// Blank workbook
-		XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
+		XSSFWorkbook workbook = new XSSFWorkbook();
 		for (Map.Entry<String, List<LeetCodeRow>> entry : data.entrySet()) {
 			addNewSheet(workbook, entry.getValue(), entry.getKey());
 		}
 
 		try {
 			// Write the workbook in file system
-			FileOutputStream out = new FileOutputStream(new File("C:\\SC\\" + "LeetCode" + ".xlsx"));
+			FileOutputStream out = new FileOutputStream(new File(excelPath + "\\LeetCode" + ".xlsx"));
 			workbook.write(out);
 			out.close();
 			System.out.println("LeetCode.xlsx written successfully on disk.");
@@ -157,6 +162,7 @@ public class LeetCodeAllQuestion {
 		style.setLeftBorderColor(HSSFColor.BLACK.index);
 		style.setRightBorderColor(HSSFColor.BLACK.index);
 		Row row = null;
+		Cell cell0 = null;
 		Cell cell1 = null;
 		Cell cell2 = null;
 		Cell cell3 = null;
@@ -170,45 +176,69 @@ public class LeetCodeAllQuestion {
 		int rownum = 0;
 		LeetCodeRow rowData1=data.remove(0);
 		row = sheet.createRow(rownum++);
-		cell1 = row.createCell(0);
-		cell1.setCellValue((String)rowData1.getQuestionId());			
-		cell2 = row.createCell(1);
+		
+		cell0 = row.createCell(0);
+		cell0.setCellType(Cell.CELL_TYPE_STRING);
+		cell0.setCellValue((String)rowData1.getFrontendId());
+		
+		cell1 = row.createCell(1);
+		cell1.setCellType(Cell.CELL_TYPE_STRING);
+		cell1.setCellValue((String)rowData1.getQuestionId());	
+		
+		cell2 = row.createCell(2);
 		cell2.setCellValue(rowData1.getQuestion());
-		cell3 = row.createCell(2);
+		
+		cell3 = row.createCell(3);
 		cell3.setCellValue((String)rowData1.getDifficulty());
-		cell4 = row.createCell(3);
+		
+		cell4 = row.createCell(4);
 		cell4.setCellValue((String)rowData1.getFrequency6m());
 		
-		cell5 = row.createCell(4);
+		cell5 = row.createCell(5);
 		cell5.setCellValue((String)rowData1.getFrequency1y());
-		cell6 = row.createCell(5);
+		
+		cell6 = row.createCell(6);
 		cell6.setCellValue((String)rowData1.getFrequency2y());
-		cell7 = row.createCell(6);
+		
+		cell7 = row.createCell(7);
 		cell7.setCellValue((String)rowData1.getFrequencyAll());
-		cell8 = row.createCell(7);
+		
+		cell8 = row.createCell(8);
 		cell8.setCellValue((String)rowData1.getPaidOnly());
 
 		for (LeetCodeRow rowData : data) {
 			row = sheet.createRow(rownum++);
-			cell1 = row.createCell(0);
-			cell1.setCellValue((Integer)rowData.getQuestionId());			
-			cell2 = row.createCell(1);
+			
+			cell0 = row.createCell(0);
+			cell0.setCellType(Cell.CELL_TYPE_STRING);
+			cell0.setCellValue((Integer)rowData.getFrontendId());
+			
+			cell1 = row.createCell(1);
+			cell1.setCellType(Cell.CELL_TYPE_STRING);
+			cell1.setCellValue((Integer)rowData.getQuestionId());	
+			
+			cell2 = row.createCell(2);
 			cell2.setCellValue(rowData.getQuestion());
-			cell3 = row.createCell(2);
+			
+			cell3 = row.createCell(3);
 			cell3.setCellValue(rowData.getDifficulty());
-			cell4 = row.createCell(3);
+			
+			cell4 = row.createCell(4);
 			cell4.setCellValue((Integer)rowData.getFrequency6m());
 			
-			cell5 = row.createCell(4);
+			cell5 = row.createCell(5);
 			cell5.setCellValue((Integer)rowData.getFrequency1y());
-			cell6 = row.createCell(5);
-			cell6.setCellValue((Integer)rowData.getFrequency2y());
-			cell7 = row.createCell(6);
-			cell7.setCellValue((Integer)rowData.getFrequencyAll());
-			cell8 = row.createCell(7);
-			cell8.setCellValue((Boolean)paidOnlyMap.get(rowData.getQuestionId()));
-
 			
+			cell6 = row.createCell(6);
+			cell6.setCellValue((Integer)rowData.getFrequency2y());
+			
+			cell7 = row.createCell(7);
+			cell7.setCellValue((Integer)rowData.getFrequencyAll());
+			
+			if(paidOnlyMap.get(rowData.getQuestionId())!=null) {
+				cell8 = row.createCell(8);
+				cell8.setCellValue((Boolean)paidOnlyMap.get(rowData.getQuestionId()));
+			}			
 		}
 		
 		sheet.autoSizeColumn(0);
@@ -231,7 +261,7 @@ public class LeetCodeAllQuestion {
 
 		try {
 			// Write the workbook in file system
-			FileOutputStream out = new FileOutputStream(new File("C:\\SC\\" + "LeetCode" + ".xlsx"));
+			FileOutputStream out = new FileOutputStream(new File(excelPath + "\\LeetCode" + ".xlsx"));
 			workbook.write(out);
 			out.close();
 			System.out.println("LeetCode.xlsx written successfully on disk.");
@@ -338,6 +368,7 @@ public class LeetCodeAllQuestion {
 	}
 
 	class LeetCodeRow {
+		private Object frontendId;
 		private Object questionId;
 		private String question;
 		private String difficulty;
@@ -354,17 +385,19 @@ public class LeetCodeAllQuestion {
 		private Object frequencyAll;
 		private Object paidOnly;
 
-		public LeetCodeRow(Object questionId, String question, String difficulty, Object frequency) {
+		public LeetCodeRow(Object frontendId, Object questionId, String question, String difficulty, Object frequency) {
+			this.frontendId = frontendId;
 			this.questionId = questionId;
 			this.question = question;
 			this.difficulty = difficulty;
 			this.frequency = frequency;
 		}
 
-		public LeetCodeRow(Object questionId, String question, String difficulty, Object frequency,
+		public LeetCodeRow(Object frontendId,Object questionId, String question, String difficulty, Object frequency,
 				Object amazonFrequency, Object googleFrequency,Object microsoftFrequency,Object appleFrequency, Object facebookFrequency, 
 				Object linkedinFrequency) {
 			super();
+			this.frontendId = frontendId;
 			this.questionId = questionId;
 			this.question = question;
 			this.difficulty = difficulty;
@@ -377,9 +410,10 @@ public class LeetCodeAllQuestion {
 			this.microsoftFrequency = microsoftFrequency;
 		}
 
-		public LeetCodeRow(Object questionId, String question, String difficulty,Object frequency6m, Object frequency1y,
+		public LeetCodeRow(Object frontendId,Object questionId, String question, String difficulty,Object frequency6m, Object frequency1y,
 				Object frequency2y, Object frequencyAll,Object paidOnly) {
 			super();
+			this.frontendId = frontendId;
 			this.questionId = questionId;
 			this.question = question;
 			this.difficulty = difficulty;
@@ -388,6 +422,15 @@ public class LeetCodeAllQuestion {
 			this.frequency2y = frequency2y;
 			this.frequencyAll = frequencyAll;
 			this.paidOnly=paidOnly;
+		}
+
+		
+		public Object getFrontendId() {
+			return frontendId;
+		}
+
+		public void setFrontendId(Object frontendId) {
+			this.frontendId = frontendId;
 		}
 
 		public Object getQuestionId() {

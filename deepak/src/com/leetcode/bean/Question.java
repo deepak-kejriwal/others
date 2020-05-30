@@ -1,5 +1,5 @@
 
-package com.leetcode;
+package com.leetcode.bean;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -74,7 +74,7 @@ public class Question {
     }
 
     @JsonProperty("questionId")
-    public Integer getQuestionId1() {
+    public Integer getQuestionId() {
         return questionId;
     }
 

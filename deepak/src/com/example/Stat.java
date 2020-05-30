@@ -42,7 +42,7 @@ public class Stat {
     private Boolean isNewQuestion;
 
     @JsonProperty("question_id")
-    public Integer getQuestionId1() {
+    public Integer getQuestionId() {
         return questionId;
     }
 

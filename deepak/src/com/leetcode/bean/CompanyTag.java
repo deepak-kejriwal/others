@@ -1,5 +1,5 @@
 
-package com.leetcode;
+package com.leetcode.bean;
 
 import java.util.List;
 import java.util.Map;
