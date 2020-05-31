@@ -1,6 +1,7 @@
 package com.coders;
 
 import java.util.Deque;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Stack;
 
@@ -15,6 +16,11 @@ public class StackVsDeque {
 		System.out.println(String.join(":", stack));
 		//Output: a:b:c:d , which follow FIFO opposite of LIFO of Stack
 		
+		Iterator<String> itr = stack.iterator();
+		while(itr.hasNext()) {
+			System.out.println(itr.next());
+		}
+		
 		Deque<String> deque = new LinkedList<>();
 		deque.push("a");
 		deque.push("b");
@@ -22,6 +28,11 @@ public class StackVsDeque {
 		deque.push("d");
 		System.out.println(String.join(":", deque));
 		//Output: d:c:b:a , which follow LIFO pattern of Stack
+		
+		itr = deque.iterator();
+		while(itr.hasNext()) {
+			System.out.println(itr.next());
+		}
 	}
 
 }
