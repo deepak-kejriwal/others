@@ -9,6 +9,8 @@ public class TestJavaFeatures {
 	public static void main2(String[] args) throws Exception {}
 
 	public static void main(String[] args) throws Exception {
+		List<String> testInsertion=new ArrayList<>();
+		
 		List<String> testSizeDefault=new ArrayList<>();
 		List<String> testSize10=new ArrayList<>(10);
 		System.out.println("DeafultSize: "+testSizeDefault);

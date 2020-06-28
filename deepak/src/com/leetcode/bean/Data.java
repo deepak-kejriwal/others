@@ -18,6 +18,9 @@ public class Data {
 
     @JsonProperty("companyTag")
     private CompanyTag companyTag;
+    
+    @JsonProperty("favoritesLists")
+    private FavoritesLists favoritesLists;
   
 
     @JsonProperty("companyTag")
@@ -29,6 +32,14 @@ public class Data {
     public void setCompanyTag(CompanyTag companyTag) {
         this.companyTag = companyTag;
     }
+
+	public FavoritesLists getFavoritesLists() {
+		return favoritesLists;
+	}
+
+	public void setFavoritesLists(FavoritesLists favoritesLists) {
+		this.favoritesLists = favoritesLists;
+	}
 
 
 

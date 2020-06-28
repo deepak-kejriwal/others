@@ -7,6 +7,9 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.core.type.TypeReference;
+
+import util.JsonService;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -50,7 +53,8 @@ public class CompanyTag {
 		return frequencies;
 	}
 
-	public void setFrequencies(Map<Integer, List<Integer>> frequencies) {
+	public void setFrequencies(String sfrequencies) throws Exception {
+		Map<Integer, List<Integer>> frequencies =JsonService.getObjectFromJson(sfrequencies, new TypeReference<Map<Integer, List<Integer>>>(){});
 		this.frequencies = frequencies;
 	}
 

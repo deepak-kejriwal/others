@@ -1,6 +1,7 @@
-import java.awt.datatransfer.StringSelection;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
@@ -8,6 +9,8 @@ import java.util.Stack;
 public class TestJavaFeatures {
 
 	public static void main(String[] args) throws Exception {
+		List<String> list = new ArrayList<>(3);
+		String st = list.get(0);
 		Map<String,Integer> map = new HashMap<>();
 		String[] strs= {"I","am","good"};
 		String str=String.join(" ",strs);

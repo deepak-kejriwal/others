@@ -12,6 +12,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.core.type.TypeReference;
+
+import util.JsonService;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -130,7 +133,8 @@ public class Question {
     }
 
     @JsonProperty("stats")
-    public void setStats(Stats stats) {
+    public void setStats(String sstats) throws Exception{
+    	Stats stats = JsonService.getObjectFromJson(sstats, Stats.class);
         this.stats = stats;
     }
 

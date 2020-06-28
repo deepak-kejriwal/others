@@ -26,8 +26,8 @@ import com.leetcode.bean.Question;
 import util.JsonService;
 
 public class LeetCodeAllQuestion {
-	private static String dirPath = "C:\\1\\leetcode\\leetcode";
-	private static String excelPath = "C:\\1\\leetcode\\leetcode-excel";
+	private static String dirPath = "C:\\Users\\deepak\\Google Drive (deepak1037@gmail.com)\\Leetcode\\leetcode";
+	private static String excelPath = "C:\\Users\\deepak\\Google Drive (deepak1037@gmail.com)\\Leetcode\\leetcode-excel";
 	private static Map<Integer, String> difficulty = new HashMap<>();
 	static {
 		difficulty.put(1, "Easy");
@@ -38,8 +38,7 @@ public class LeetCodeAllQuestion {
 	public static void main(String[] args) throws Exception {
 		Map<String, Map<Integer, List<Integer>>> all = new HashMap<>();
 		LeetCodeAllQuestion lc = new LeetCodeAllQuestion();
-		Map<String, List<LeetCodeRow>> allMap=new HashMap<>();
-		lc.loadAllFiles(allMap,all);
+		
 
 		
 		Map<String, List<LeetCodeRow>> map=new HashMap<>();
@@ -49,9 +48,26 @@ public class LeetCodeAllQuestion {
 			lc.processFiles(all,map,file);
 		}
 		//lc.writeToExcel(map);
-		lc.updateToExcel(allMap);
+		startAll();
 		//lc.writeToExcel(allMap);
 	}
+	
+	public static void startAll() throws Exception{
+		LeetCodeAllQuestion lc = new LeetCodeAllQuestion();
+		Map<String, List<LeetCodeRow>> allMap=new HashMap<>();
+		Map<String, Map<Integer, List<Integer>>> all = new HashMap<>();
+		lc.loadAllFiles(allMap,all);
+		lc.updateToExcel(allMap);
+	}
+	
+	public static void startAll(String fileName, String jsonString) throws Exception{
+		LeetCodeAllQuestion lc = new LeetCodeAllQuestion();
+		Map<String, List<LeetCodeRow>> allMap=new HashMap<>();
+		Map<String, Map<Integer, List<Integer>>> all = new HashMap<>();
+		lc.processAllFiles(allMap,all, fileName, jsonString);
+		lc.updateToExcel(allMap);
+	}
+
 
 	private void processFiles(Map<String, Map<Integer, List<Integer>>> all,Map<String, List<LeetCodeRow>> map, File file) throws Exception {
 		String jsonString = new String(Files.readAllBytes(file.toPath()));
@@ -99,17 +115,25 @@ public class LeetCodeAllQuestion {
 				processAllFiles(allMap,all, file);
 		}
 	}
-
+	
+	
+	
 	private void processAllFiles(Map<String, List<LeetCodeRow>> allMap,Map<String, Map<Integer, List<Integer>>> all, File file) throws Exception {
+		String jsonString = new String(Files.readAllBytes(file.toPath()));
+		String fileName = FilenameUtils.getBaseName(file.getName());
+		processAllFiles(allMap,all, fileName, jsonString);
+	}
+
+	private void processAllFiles(Map<String, List<LeetCodeRow>> allMap,Map<String, Map<Integer, List<Integer>>> all, String fileName, String jsonString) throws Exception {
 		List<LeetCodeRow> list = new ArrayList<>();
 		list.add(new LeetCodeRow("FrontendId","QuestionId","Question", "Difficulty", "Frequency 6 month","Frequency 1 Year","Frequency 2 Year","Frequency All","PaidOnly"));
-		String jsonString = new String(Files.readAllBytes(file.toPath()));
 		AllQuestionMain dlb = JsonService.getObjectFromJson(jsonString, AllQuestionMain.class);
-		String fileName = FilenameUtils.getBaseName(file.getName());
 		all.put(fileName, dlb.getData().getCompanyTag().getFrequencies());
 		processAllData(dlb,list);
 		allMap.put(fileName, list);
 	}
+	
+	
 
 	private void processAllData(AllQuestionMain dlb,List<LeetCodeRow> list) {
 		List<Question> questions =dlb.getData().getCompanyTag().getQuestions();
