@@ -8,8 +8,8 @@ public class BaseConversionImpl {
 
 	public static void main(String[] args) {
 		BaseConversionImpl impl=new BaseConversionImpl();
-		String input="33";
-		String output=new String(impl.convert(input.toCharArray(), 8, 2));
+		String input="11";
+		String output=new String(impl.convert(input.toCharArray(), 10, 62));
 		System.out.println(output);
 	}
 	private char[] convert(final char[] message, final int sourceBase, final int targetBase) {

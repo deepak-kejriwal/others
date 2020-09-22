@@ -1,11 +1,19 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Test {
-//If 9 is replaced by 1. This solution fails
+
 	public static void main(String[] args) {
+
+	}
+
+
+
+//If 9 is replaced by 1. This solution fails
+	public static void main6(String[] args) {
 		List<Integer> list1 = Stream.of(1, 0, 0).collect(Collectors.toList());
 		List<Integer> list2 = Stream.of(1, 0, 0).collect(Collectors.toList());
 		List<Integer> list3 = Stream.of(1, 9, 1).collect(Collectors.toList());

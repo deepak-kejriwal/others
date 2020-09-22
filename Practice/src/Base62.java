@@ -8,7 +8,7 @@ import java.io.ByteArrayOutputStream;
  */
 public class Base62 {
 
-	private static final int STANDARD_BASE = 256;
+	private static final int STANDARD_BASE = 10;
 
 	private static final int TARGET_BASE = 62;
 
