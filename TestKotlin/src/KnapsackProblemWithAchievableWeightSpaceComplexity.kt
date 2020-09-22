@@ -8,14 +8,14 @@
 
 
 fun main(args : Array<String>) {
-	var c1: Clock=Clock(60,5);
-	var c2: Clock=Clock(50,3);
-	var c3: Clock=Clock(70,4);
-	var c4: Clock=Clock(30,2);
+	var c1: Clock=Clock(60,100);
+	var c2: Clock=Clock(50,200);
+	var c3: Clock=Clock(70,200);
+	var c4: Clock=Clock(30,500);
 	var list=listOf(c1,c2,c3,c4);
 	//list.add(c1);
     println(list)
-	var p=KnapsackProblemWithAchievableWeightSpaceComplexity.computeBottomUpWithMemoization(5,list);
+	var p=KnapsackProblemWithAchievableWeightSpaceComplexity.computeBottomUpWithMemoization(853,list);
 	println(p);
 }
 

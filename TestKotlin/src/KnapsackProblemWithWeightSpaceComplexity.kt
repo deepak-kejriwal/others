@@ -31,22 +31,22 @@ object KnapsackProblemWithWeightSpaceComplexity {
                                 clock.value else 0
                        } else {
 							var list=listOf(capacity, capacity - clock.weight);
-                            var map=list
-                                    .map {
+                            var map=list.map {
                                         // Filter out invalid clockIndex +
                                         // capacity pairs.
                                         if (it >= 0 )
                                             cache[it]
                                         else null
                                     };
-                                    map.let {
+							
+                             map.let {
                                         // Select the max value.
                                        var list1= listOfNotNull(
                                             it[0],
                                             it[1]?.let { it + clock.value });
                                                 list1.max() ?: 0
 										
-                                    }
+                            }
 							
                         }
 				cache[capacity] =ct;
