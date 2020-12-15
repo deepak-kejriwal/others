@@ -46,22 +46,22 @@ public class GoogleReorderSpace {
 		int charStart = 0;
 		while (i >= 0 && j >= 0) {
 
-			while (j >= 0 && chars[j] == ' ') {
+			while (j >= 0 && chars[j] == ' ') { // find first word start from right
 				space[0]++;
 				j--;
 			}
 
-			if(j>=0) {
+			if(j>=0) { // increase word count
 				word[0]++;
 			}
-			while (j >= 0 && chars[j] != ' ') {
+			while (j >= 0 && chars[j] != ' ') { // copy word char to ith location
 				charStart = i;
 				chars[i--] = chars[j--];			
 			}
 
 			
 			
-			if (j >= 0) {
+			if (j >= 0) { // copy one space
 				
 				space[0]++;
 				chars[i--] = chars[j--];

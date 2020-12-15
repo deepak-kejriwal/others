@@ -1,13 +1,13 @@
 public class Base62Converter {
 
 	public static void main(String[] args) {		
-		Long num = 1L;				
+		Long num = Long.parseLong("011111111111111111111111111111111111111111111111", 2);				
 		System.out.println(convertToBase62(num));
 	}
 	
 	private static String convertToBase62(long num) {
-		int n =6;
-		char[] result = new char[7];
+		int n = 11;
+		char[] result = new char[n+1];
 		
 		long rem;
 		while(num>0) {

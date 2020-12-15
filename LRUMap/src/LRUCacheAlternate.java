@@ -73,9 +73,9 @@ public class LRUCacheAlternate {
 
 	private void addAtTop(Node node) {
 		node.right = start.right;
+		node.right.left = node;
 		start.right = node;
 		node.left = start;
-		node.right.left = node;
 	}
 
 	private void removeNode(Node node) {

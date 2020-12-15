@@ -4,10 +4,12 @@ import java.util.Date;
 
 public class MsftQ2 {
 
-	private static String input = "admin  -wx 29 Sep 1983        833 source.h\r\n"
+	private static String input = 
+			  "admin  -wx 29 Sep 1983        833 source.h\r\n"
 			+ "admin  r-x 23 Jun 2003     854016 blockbuster.mpeg\r\n"
 			+ "admin  --x 02 Jul 1997        821 delete-this.py\r\n"
-			+ "admin  -w- 15 Feb 1971      23552 library.dll\r\n" + "admin  --x 15 May 1979  645922816 logs.zip\r\n"
+			+ "admin  -w- 15 Feb 1971      23552 library.dll\r\n" 
+			+ "admin  --x 15 May 1979  645922816 logs.zip\r\n"
 			+ "jane   --x 04 Dec 2010      93184 old-photos.rar\r\n"
 			+ "jane   -w- 08 Feb 1982  681574400 important.java\r\n"
 			+ "admin  rwx 26 Dec 1952   14680064 to-do-list.txt";
@@ -24,7 +26,6 @@ public class MsftQ2 {
 
 	public static void main(String[] args) {
 		String[] files = input.split("\n");
-
 		System.out.println(getEligibleFiles(files));
 	}
 

@@ -3,6 +3,7 @@ import static java.util.stream.Collectors.toMap;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -166,6 +167,27 @@ public class Java8Stream {
 	 */
 	public static int[] integerToInt(Integer[] nums) {
 		return Arrays.stream(nums).mapToInt(x -> x).toArray();
+	}
+	
+	/**
+	 * sum of elements of array
+	 * 
+	 * @param Integer[]
+	 * @return int
+	 */
+	public static int sum(Integer[] nums) {
+		return Arrays.stream(nums).mapToInt(x -> x).sum();
+	}
+	
+	
+	/**
+	 * sum of elements of stack
+	 * 
+	 * @param Deque<Integer>
+	 * @return int
+	 */
+	public static int sum(Deque<Integer> nums) {
+		return nums.stream().mapToInt(x -> x).sum();
 	}
 
 }

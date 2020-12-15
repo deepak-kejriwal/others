@@ -1,1 +1,0 @@
-data class Clock(val value: Int, val weight: Int)
